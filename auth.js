@@ -24,20 +24,39 @@ const descText = document.getElementById('descText');
 const charCount = document.getElementById('charCount');
 
 // Données utilisateur
-let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+let currentUser = null;
 
-// INITIALISATION
+// INITIALISATION - S'exécute quand le DOM est complètement chargé
 document.addEventListener('DOMContentLoaded', () => {
-  if (currentUser) {
-    showProfile();
+  // Charger l'utilisateur depuis le localStorage
+  const savedUser = localStorage.getItem('currentUser');
+  if (savedUser) {
+    try {
+      currentUser = JSON.parse(savedUser);
+      showProfile();
+    } catch (e) {
+      console.error('Erreur lors du chargement de l\'utilisateur:', e);
+      currentUser = null;
+      userArea.style.display = 'flex';
+      profileArea.style.display = 'none';
+    }
+  } else {
+    // S'assurer que userArea est visible si pas d'utilisateur
+    userArea.style.display = 'flex';
+    profileArea.style.display = 'none';
   }
+  
   setupEventListeners();
 });
 
 // SETUP DES ÉVÉNEMENTS
 function setupEventListeners() {
-  connexionBtn.addEventListener('click', openAuthModal);
+  // Bouton Connexion
+  if (connexionBtn) {
+    connexionBtn.addEventListener('click', openAuthModal);
+  }
   
+  // Boutons fermeture modals
   closeButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
       const modal = e.target.closest('.modal');
@@ -47,24 +66,29 @@ function setupEventListeners() {
     });
   });
 
+  // Fermer modal au clic en dehors
   window.addEventListener('click', (e) => {
     if (e.target === authModal) authModal.classList.remove('show');
     if (e.target === descModal) descModal.classList.remove('show');
   });
 
-  toRegister.addEventListener('click', switchToRegister);
-  toLogin.addEventListener('click', switchToLogin);
+  // Switcher entre connexion et inscription
+  if (toRegister) toRegister.addEventListener('click', switchToRegister);
+  if (toLogin) toLogin.addEventListener('click', switchToLogin);
 
-  loginForm.addEventListener('submit', handleLogin);
-  registerForm.addEventListener('submit', handleRegister);
+  // Formulaires
+  if (loginForm) loginForm.addEventListener('submit', handleLogin);
+  if (registerForm) registerForm.addEventListener('submit', handleRegister);
 
-  imageInput.addEventListener('change', handleImagePreview);
+  // Upload image
+  if (imageInput) imageInput.addEventListener('change', handleImagePreview);
 
+  // Description
   if (descBtn) descBtn.addEventListener('click', openDescModal);
   if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
 
-  descForm.addEventListener('submit', handleDescSave);
-  descText.addEventListener('input', updateCharCount);
+  if (descForm) descForm.addEventListener('submit', handleDescSave);
+  if (descText) descText.addEventListener('input', updateCharCount);
 }
 
 // MODAL AUTHENTICATION
@@ -178,22 +202,35 @@ function handleRegister(e) {
 
 // AFFICHER PROFIL
 function showProfile() {
+  if (!currentUser) return;
+  
   userArea.style.display = 'none';
   profileArea.style.display = 'flex';
-  profileImg.src = currentUser.image;
-  pseudoDisplay.textContent = currentUser.pseudo;
+  
+  if (profileImg && currentUser.image) {
+    profileImg.src = currentUser.image;
+  }
+  
+  if (pseudoDisplay && currentUser.pseudo) {
+    pseudoDisplay.textContent = currentUser.pseudo;
+  }
 }
 
 // MODAL DESCRIPTION
 function openDescModal() {
   descModal.classList.add('show');
-  descText.value = currentUser.description || '';
-  updateCharCount();
+  if (descText) {
+    descText.value = currentUser && currentUser.description ? currentUser.description : '';
+    updateCharCount();
+  }
 }
 
 function handleDescSave(e) {
   e.preventDefault();
-  currentUser.description = descText.value;
+  
+  if (!currentUser) return;
+  
+  currentUser.description = descText ? descText.value : '';
   
   // Mettre à jour dans localStorage
   const users = JSON.parse(localStorage.getItem('users')) || [];
@@ -210,7 +247,9 @@ function handleDescSave(e) {
 }
 
 function updateCharCount() {
-  charCount.textContent = descText.value.length;
+  if (descText && charCount) {
+    charCount.textContent = descText.value.length;
+  }
 }
 
 // DÉCONNEXION
@@ -223,9 +262,9 @@ function handleLogout() {
     profileArea.style.display = 'none';
 
     // Réinitialiser les formulaires
-    loginForm.reset();
-    registerForm.reset();
-    previewImg.src = 'https://via.placeholder.com/150';
+    if (loginForm) loginForm.reset();
+    if (registerForm) registerForm.reset();
+    if (previewImg) previewImg.src = 'https://via.placeholder.com/150';
     
     alert('Déconnexion réussie!');
   }
