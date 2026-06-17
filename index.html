@@ -2,201 +2,146 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DIRECT+</title>
-  <style>
-    body{font-family:Arial; max-width:700px; margin:50px auto; padding:20px; background:#111; color:#eee;}
-    h1{border-bottom:2px solid red; padding-bottom:10px;}
-  </style>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Inter:wght@400;600&display=swap">
 </head>
 <body>
-  <h1>DIRECT+</h1>
-  <p>Le site officiel de la micronation tk2799.</p>
 
-  <h2>Article 1 : On existe</h2>
-  <p>Date: 04/10/2025 <br>
-  Bienvenue sur DIRECT+. C’est ici qu’on publie les infos.</p>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>DIRECT+</title>
-
-<link rel="stylesheet" href="style.css">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet"
-href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Inter:wght@400;600&display=swap">
-
-</head>
-
-<body>
-
+<!-- HEADER -->
 <header>
+  <div class="topbar">
+    <div class="logo">
+      DIRECT+
+    </div>
+    <div class="right">
+      <div id="userArea">
+        <button id="connexionBtn" class="btn-connexion">Connexion</button>
+      </div>
+      <div id="profileArea" class="profile-area" style="display: none;">
+        <div class="profile-dropdown">
+          <img id="profileImg" src="" alt="Profil" class="profile-pic">
+          <div class="dropdown-menu">
+            <div id="pseudoDisplay" class="pseudo-name"></div>
+            <hr>
+            <button id="descBtn" class="dropdown-item">📝 Ajouter/Modifier description</button>
+            <button id="logoutBtn" class="dropdown-item logout">🚪 Se déconnecter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div class="topbar">
-
-<div class="left">
-☰ Menu
-</div>
-
-<div class="logo">
-DIRECT+
-</div>
-
-<div class="right">
-Connexion
-</div>
-
-</div>
-
-<nav>
-
-<a href="#">Politique</a>
-<a href="#">International</a>
-<a href="#">Économie</a>
-<a href="#">Culture</a>
-<a href="#">Sport</a>
-
-</nav>
-
+  <nav>
+    <a href="#">Politique</a>
+    <a href="#">International</a>
+    <a href="#">Économie</a>
+    <a href="#">Culture</a>
+    <a href="#">Sport</a>
+  </nav>
 </header>
 
+<!-- MODAL CONNEXION/INSCRIPTION -->
+<div id="authModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2 id="modalTitle">Connexion</h2>
+    
+    <div class="form-container">
+      <!-- TAB CONNEXION -->
+      <form id="loginForm" class="auth-form active">
+        <h3>Se connecter</h3>
+        <input type="text" id="loginPseudo" placeholder="Pseudo" required>
+        <input type="password" id="loginPassword" placeholder="Mot de passe" required>
+        <button type="submit" class="btn-submit">Se connecter</button>
+        <p class="switch-form">Pas de compte? <span id="toRegister">S'inscrire</span></p>
+      </form>
 
-<main>
-
-<aside class="sidebar">
-
-<h3>À LA UNE</h3>
-
-<div class="card">
-
-<img src="https://picsum.photos/400/250">
-
-<h2>Premier titre secondaire</h2>
-
+      <!-- TAB INSCRIPTION -->
+      <form id="registerForm" class="auth-form">
+        <h3>Créer un compte</h3>
+        <div class="image-upload">
+          <img id="previewImg" src="https://via.placeholder.com/150" alt="Aperçu" class="img-preview">
+          <input type="file" id="imageInput" accept="image/*" required>
+          <label for="imageInput" class="btn-upload">Choisir une photo</label>
+        </div>
+        <input type="text" id="regPseudo" placeholder="Pseudo" required>
+        <input type="password" id="regPassword" placeholder="Mot de passe" required>
+        <input type="password" id="regPasswordConfirm" placeholder="Confirmer le mot de passe" required>
+        <button type="submit" class="btn-submit">S'inscrire</button>
+        <p class="switch-form">Déjà un compte? <span id="toLogin">Se connecter</span></p>
+      </form>
+    </div>
+  </div>
 </div>
 
-<div class="card">
-
-<img src="https://picsum.photos/401/250">
-
-<h2>Deuxième actualité</h2>
-
+<!-- MODAL DESCRIPTION -->
+<div id="descModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Ajouter une description</h2>
+    <form id="descForm">
+      <textarea id="descText" placeholder="Écris ta description..." maxlength="500"></textarea>
+      <div class="char-count"><span id="charCount">0</span>/500</div>
+      <button type="submit" class="btn-submit">Enregistrer</button>
+    </form>
+  </div>
 </div>
 
-</aside>
-
-
-
-<section class="main">
-
-<img src="https://picsum.photos/900/450">
-
-<h1>
-DIRECT+ ouvre son service national d'information
-</h1>
-
-<p>
-Le gouvernement annonce une nouvelle stratégie médiatique.
-</p>
-
+<!-- SECTION ACTUALITÉS ÉLARGIES -->
+<section class="actualites-section">
+  <h2>Actualités</h2>
+  <div id="newsContainer" class="news-grid">
+    <div class="news-item">
+      <img src="https://picsum.photos/400/250">
+      <div class="news-item-content">
+        <h3>Premier titre secondaire</h3>
+        <p>Description de l'actualité...</p>
+      </div>
+    </div>
+    <div class="news-item">
+      <img src="https://picsum.photos/401/250">
+      <div class="news-item-content">
+        <h3>Deuxième actualité</h3>
+        <p>Description de l'actualité...</p>
+      </div>
+    </div>
+  </div>
 </section>
 
-
-
-<aside class="flash">
-
-<h3>EN DIRECT</h3>
-
-<ul>
-
-<li>14:24 — Nouvelle annonce</li>
-
-<li>14:08 — Débat national</li>
-
-<li>13:40 — DIRECT+ Culture</li>
-
-<li>13:12 — Sport</li>
-
-</ul>
-
-</aside>
-
-</main>
-
-</body>
-
-</html>
-<!DOCTYPE html>
-
-<html>
-
-<head>
-
-<title>DIRECT+</title>
-
-<link rel="stylesheet" href="style.css">
-
-</head>
-
-<body>
-
-<header>
-
-<div class="logo">
-DIRECT+
-</div>
-
-<div id="userArea">
-
-<a href="login.html">
-Connexion
-</a>
-
-</div>
-
-</header>
-
-
-<nav>
-
-<a href="#politique">Politique</a>
-
-<a href="#international">International</a>
-
-<a href="#eco">Économie</a>
-
-<a href="#culture">Culture</a>
-
-<a href="#sport">Sport</a>
-
-</nav>
-
-
+<!-- CONTENU PRINCIPAL -->
 <main>
+  <aside class="sidebar">
+    <h3>À LA UNE</h3>
+    <div class="card">
+      <img src="https://picsum.photos/400/250">
+      <h2>Premier titre secondaire</h2>
+    </div>
+    <div class="card">
+      <img src="https://picsum.photos/401/250">
+      <h2>Deuxième actualité</h2>
+    </div>
+  </aside>
 
-<section>
+  <section class="main">
+    <img src="https://picsum.photos/900/450">
+    <h1>DIRECT+ ouvre son service national d'information</h1>
+    <p>Le gouvernement annonce une nouvelle stratégie médiatique.</p>
+  </section>
 
-<h1>Actualités</h1>
-
-<div id="newsContainer">
-
-</div>
-
-</section>
-
+  <aside class="flash">
+    <h3>EN DIRECT</h3>
+    <ul>
+      <li>14:24 — Nouvelle annonce</li>
+      <li>14:08 — Débat national</li>
+      <li>13:40 — DIRECT+ Culture</li>
+      <li>13:12 — Sport</li>
+    </ul>
+  </aside>
 </main>
-
-<script src="news.js"></script>
 
 <script src="auth.js"></script>
-
 </body>
-
 </html>
