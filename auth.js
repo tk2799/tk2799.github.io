@@ -257,3 +257,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 });
+const articles =
+document.querySelectorAll(".news-item");
+
+articles.forEach(article=>{
+
+article.addEventListener(
+"click",
+()=>{
+
+const id =
+article.dataset.article;
+
+window.location.href =
+`article.html?id=${id}`;
+
+});
+
+});
