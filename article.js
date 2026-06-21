@@ -1,3 +1,9 @@
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+console.log("URL complète :", window.location.href);
+console.log("ID reçu :", id);
+
 console.log("URL :", window.location.href);
 
 const articles = {
